@@ -1,0 +1,879 @@
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+CAPÍTULO 7 
+-----------------------------------------------------------------------------------------------
+
+let youTubeURL = 'https://youtube.com';
+
+//let ventana = window.open(youTubeURL);
+
+//ventana.close();
+
+const scrollX = window.scrollX;
+const scrollY = window.scrollY;
+
+alert (scrollX + " - " + scrollY);
+
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+CAPÍTULO 9
+-----------------------------------------------------------------------------------------------
+const button = document.querySelector(".button");
+
+// FORMA 1
+// button.onclick = () => {
+// 	alert ('hola');
+// };
+
+
+// FORMA 2
+// button.addEventListener('click', saludar)
+
+// function saludar (){
+// 	alert ('hola');
+// };
+
+// FORMA 3
+
+//button.addEventListener('click', ()=>{alert ('Pedro!!');})
+
+button.addEventListener('click', (e)=>{
+	console.log(e.srcElement);
+});
+
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+CAPÍTULO 10
+-----------------------------------------------------------------------------------------------
+const sendButton = document.getElementById('enviar-nota');
+
+sendButton.addEventListener("click",() => {
+	let resultado, mensaje
+
+	try {
+		resultado = parseInt(document.getElementById('nota').value);
+		if (isNaN(resultado) || resultado < 0){
+			throw "Gracioso";
+		}
+
+		mensaje = verificarNota (resultado);
+	} catch (e) {
+		resultado = "¿Sos gracioso?";
+		mensaje = "He descubierto que trataste hackear el sitio";
+	}
+
+
+
+	abrirModal (resultado, mensaje);
+} );
+
+
+const abrirModal = (res, mje) => {
+	let colorcillo = "green";
+	if (res < 4) {colorcillo = "red";}
+
+	document.querySelector(".resultado").innerHTML = ["<span class = "+colorcillo+">"+res+"</span>"];
+	document.querySelector(".mensaje").innerHTML = mje;
+
+	let modal = document.querySelector (".modal-background");
+
+	modal.style.display = "flex";
+	modal.style.animation = "aparecer 1s forwards";
+
+}
+
+function verificarNota (nota) {
+	if (nota < 3) {
+		resp = "Aplazado";
+	} else if (nota < 4) {
+		resp = "Bochado";
+	} else if (nota <= 7) {
+		resp = "Aprobado";
+	} else if (nota < 10) {
+		resp = "Excelente";
+	} else if (nota == 10) {
+		resp = "10 puntos!!! clap!";
+	} else {
+		resp = "No inventes!";
+	}
+
+	return resp;
+}
+
+-----------------------------------------------------------------------------------------------
+CSS
+
+body {
+	color: #333;
+	font-family: "Arial Narrow";
+}
+
+.form-nota {
+	margin-top: 60px;
+	text-align: center;
+	background: #26a;
+	padding: 20px;
+	box-sizing: border-box;
+	display: flex;
+	width: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+h2 {
+	margin: 0;
+	flex-grow: 1;
+	color: #fff;
+	margin-right: 20px;
+}
+
+input {
+	width: 40px;
+	border: none;
+}
+
+input[type="button"]{
+	width: auto;
+	margin-left: 5px;
+	color: #48e;
+	background: #fff;
+	border: none;
+	letter-spacing: 1px;
+}
+
+.modal-background {
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.7);
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	opacity: 0;
+}
+
+.modal {
+	background: #fff;
+	width: 500px;
+	margin: auto;
+	text-align: center;
+}
+
+.resultado {
+	font-size: 23px;
+	margin-bottom: 5px;
+}
+
+
+@keyframes aparecer {
+	0% {
+		opacity: 0;
+		display: flex;
+	}
+	100% {
+		opacity: 1;
+		display: flex;
+	}
+}
+
+.red {
+	color: #f00;
+}
+
+.green {
+	color: green;
+}
+
+-----------------------------------------------------------------------------------------------
+HTML
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="estilo.css">
+	<title></title>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<div class="modal-background">
+		<div class="modal">
+			<h3 class="resultado">asasasas</h3>
+			<p class="mensaje">fdfdfdffdf</p>
+		</div>
+	</div>
+	<form class="form-nota">
+		<h2>Introduce la nota del alumno</h2>
+		<input type="number" id="nota">
+		<input type="button" id="enviar-nota" value="Otorgar nota">
+	</form>
+
+	
+	<script src="codigo.js"></script>
+</body>
+</html>
+-----------------------------------------------------------------------------------------------
+CAPÍTULO 12
+-----------------------------------------------------------------------------------------------
+//  Callbacks --------------------------------------------------------------------
+
+// class Persona {
+// 	constructor (nombre, mail){
+// 		this.nombre = nombre;
+// 		this.mail = mail;
+// 	}
+// };
+
+// const data = [
+// 	["Artime", "lugezz@gmail.com"],
+// 	["Ceci", "cecirulitoz@gmail.com"],
+// 	["Artime2", "lugezz@hotmail.com"],
+// 	["Emma", "escachula@gmail.com"],
+// 	["Jazmín"]
+// ];
+
+// const personas = [];
+
+// for (var i = 0; i < data.length; i++) {
+// 	personas[i] = new Persona(data[i][0], data [i][1]);
+// }
+
+// const obtenerPersona = (id, cb) => {
+// 	if (personas[id]==undefined){
+// 		cb("No se ha encontrado la persona");
+// 	} else {
+// 		cb(null,personas[id],id)
+// 	}
+// }
+
+
+// const obtenerMail = (id, cb) => {
+// 	if (personas[id].mail==undefined){
+// 		cb("No se ha encontrado el mail");
+// 	} else {
+// 		cb(null,personas[id].mail)
+// 	}
+// }
+
+// obtenerPersona (2, (err, persona, id)=>{
+// 	if (err){
+// 		console.log (err);
+// 	} else {
+// 		console.log (persona.nombre);
+// 		obtenerMail(id, (err, mail)=> {
+// 				if (err){
+// 					console.log (err);
+// 				} else {
+// 					console.log (mail);
+// 				}
+// 			})
+// 		}
+// });
+
+
+// Promesas --------------------------------------------------------------------
+
+
+// let nombre = "Pesdro";
+
+// const promesa = new Promise((resolve, reject)=>{
+// 	if (nombre !== "Pedro") reject ("Lo siento, el nombre no es Pedro")
+// 	else resolve (nombre);
+// });
+
+// promesa.then((resultado) =>{
+// 	console.log (resultado);
+// }).catch((e)=>{
+// 	console.log(e);
+// })
+
+// Promesas solucionando problema original  --------------------------------------------------------------------
+
+class Persona {
+	constructor (nombre, mail){
+		this.nombre = nombre;
+		this.mail = mail;
+	}
+};
+
+const data = [
+	["Artime", "lugezz@gmail.com"],
+	["Ceci", "cecirulitoz@gmail.com"],
+	["Artime2", "lugezz@hotmail.com"],
+	["Emma", "escachula@gmail.com"],
+	["Jazmín"]
+];
+
+const personas = [];
+
+for (var i = 0; i < data.length; i++) {
+	personas[i] = new Persona(data[i][0], data [i][1]);
+}
+
+const obtenerPersona = (id) => {
+	return new Promise ((res, rej)=>{
+			if (personas[id] == undefined) rej ("No se ha encontrado la persona")
+	 		else res (personas[id]);
+		})
+};
+
+
+const obtenerMail = (id) => {
+	return new Promise ((res, rej)=>{
+			if (personas[id].mail == undefined) rej ("No se ha encontrado mail")
+	 		else res (personas[id].mail);
+		})
+};
+
+let id = 4
+
+obtenerPersona(id).then ((persona)=>{
+	console.log(persona.nombre);
+	return obtenerMail(id);
+		}).then((mail)=>{
+			console.log(mail);
+		}).catch((e)=>{
+			console.log(e);
+		})
+
+-----------------------------------------------------------------------------------------------
+Otra vez - Callbacks
+-----------------------------------------------------------------------------------------------
+
+class Persona {
+	constructor (nombre, apellido) {
+		this.nombre = nombre;
+		this.apellido = apellido;
+	}
+};
+
+const data = [
+	["Eugenio", "Vazquez"],
+	["Cecilia", "Prados"],
+	["Emma", "Vazquez"],
+	["Jazmín", "Vazquez"]
+];
+
+const personas = [];
+
+for (let i = 0; i < data.length; i++) {
+	personas [i]  = new Persona (data[i][0], data[i][1]);
+}
+
+// console.log (personas[0].nombre);
+
+function obtenerPersona (id, callback) {
+	if (personas[id] == undefined) {
+		callback ('No se ha encontrado la persona');
+	} else {
+		callback (null,personas[id], id)
+	}
+};
+
+function obtenerApellido(id, callback) {
+	if (personas[id].apellido == undefined) {
+		callback ('No se ha encontrado el apellido');
+	} else {
+		callback (null, personas[id].apellido)
+	}
+};
+
+let idz = 1;
+
+obtenerPersona (idz, (err, persona, id)=>{
+	if (err){
+		console.log (err);
+	} else {
+		console.log("El nombre es:",persona.nombre);
+		
+		obtenerApellido (idz, (err, apellido)=> {
+			if (err){
+				console.log (err);
+			} else {
+				console.log  ("El apellido es :", apellido);
+			}
+		});
+	};
+});
+
+
+-----------------------------------------------------------------------------------------------
+Otra vez - Promises
+-----------------------------------------------------------------------------------------------
+let nombre = "Pedrso";
+
+const promesa = new Promise ((resolve, reject)=>{
+	if (nombre !== "Pedro"){
+		reject ("Lo siento, el nombre no es Pedro");
+	} else {
+		resolve (nombre);
+	};
+});
+
+promesa
+	.then (res => console.log (res))
+	.catch(e => console.log (e));
+
+-----------------------------------------------------------------------------------------------
+class Persona {
+	constructor (nombre, apellido) {
+		this.nombre = nombre;
+		this.apellido = apellido;
+	}
+};
+
+const data = [
+	["Eugenio", "Vazquez"],
+	["Cecilia", "Prados"],
+	["Emma", "Vazquez"],
+	["Jazmín"]
+];
+
+const personas = [];
+
+for (let i = 0; i < data.length; i++) {
+	personas [i]  = new Persona (data[i][0], data[i][1]);
+};
+
+//console.log (personas);
+
+function obtenerPersona (id) {
+	return new Promise ((res, rej) => {
+		if (personas[id]==undefined) rej ('No se ha encontrado la persona')
+		else res(personas[id]);
+	});
+};
+
+function obtenerApellido (id) {
+	return new Promise ((res, rej) => {
+		if (personas[id].apellido==undefined) rej ('No se ha encontrado el apellido')
+		else res(personas[id].apellido);
+	});
+};
+
+idz = 1;
+
+obtenerPersona(idz)
+	.then(persona=>{
+		console.log ("El nombre es:",persona.nombre);
+		return obtenerApellido (idz);
+	})
+		.then (apellido=> console.log ("El apellido es:", apellido))
+		.catch(e=> console.log (e));
+
+-----------------------------------------------------------------------------------------------
+Otra vez - Async / Await
+-----------------------------------------------------------------------------------------------
+const objeto = {
+	obj1: "Valor 1",
+	obj2: "Valor 2",
+	obj3: "Valor 3",
+};
+
+function obtenerInfo () {
+	return new Promise ((res, rej) => {
+		setTimeout(function() {res(objeto)}, 2000);
+	})
+};
+
+obtenerInfo().then (resultado => console.log(resultado));
+
+const mostrarResultado = async () =>{
+	resultado = await obtenerInfo();
+	console.log(resultado);
+};
+
+mostrarResultado();
+-----------------------------------------------------------------------------------------------
+CAPÍTULO 13
+-----------------------------------------------------------------------------------------------
+objeto = {
+	'variable1': 'Juan',
+	'variable2': 'Pedro'
+};
+
+console.log (objeto);
+console.log (typeof objeto);
+
+objeto = JSON.stringify(objeto); //Serializa
+console.log (typeof objeto);
+
+objeto = JSON.parse(objeto); //Deserializa
+console.log (typeof objeto);
+
+-----------------------------------------------------------------------------------------------
+AJAX
+-----------------------------------------------------------------------------------------------
+
+const peticion = new XMLHttpRequest();
+
+// GET ---------------------------------------------------------
+// peticion.addEventListener ('readystatechange',()=>{
+// 	console.log (peticion.readyState);
+// 	console.log (peticion.response); // 1 Se creó, 2 Se envió, 3 se recibió, 4 se recibió respuesta (no significa que bien)
+// 	console.log (peticion.status); // 200 ok, errores posible 404: No se encontró, 403: Prohibido
+// })
+
+//para evitar todas las validaciones se puede usar el load
+
+// peticion.addEventListener ('load',()=>{
+// 	let respuesta;
+
+// 	if (peticion.status == 200) respuesta = peticion.response
+// 	else respuesta = "No se ha encontrado el recurso | " + peticion.status ;
+
+// 	console.log (respuesta);
+// })
+
+// peticion.open ('GET', 'info.txt');
+// peticion.send();
+
+// console.log (peticion);
+
+// POST ---------------------------------------------------------
+// Datos no en URL
+
+peticion.addEventListener ('load',()=>{
+	let respuesta;
+
+	if (peticion.status == 200 || peticion.status == 201) respuesta = peticion.response
+	else respuesta = "No se ha encontrado el recurso | " + peticion.status ;
+
+	console.log (JSON.parse(respuesta));
+})
+
+peticion.open ('POST', 'https://reqres.in/api/users');
+
+peticion.setRequestHeader('Content-Type', 'application/json; charset=UTF8');
+
+peticion.send(JSON.stringify({
+	'nombre': 'Artime',
+	'trabajo': 'Conta'
+}));
+
+console.log (peticion);
+
+-----------------------------------------------------------------------------------------------
+FETCH
+-----------------------------------------------------------------------------------------------
+
+peticion = fetch ('https://reqres.in/api/users'); // Es GET por defecto
+
+//peticion.then (resp => console.log (resp.text())); // Text es una promesa
+//... Entonces
+
+peticion
+	.then (resp=> resp.text())
+	.then (resp=> console.log (resp));
+
+
+console.log (peticion);
+
+// Como JSON
+fetch ('https://reqres.in/api/users')
+	.then (resp=> resp.json())
+	.then (resp=> console.log (resp));
+
+
+// POST -------------------------------------------------------------------------------------------
+fetch ('https://reqres.in/api/users',{
+	method: 'POST',
+	body: JSON.stringify ({ // O con backsticks
+		Nombre: 'Artime',
+		Trabajo: 'Contador'
+	}),
+	headers:{"Content-type": "application/json"}
+})
+	.then (resp=> resp.json())
+	.then (resp=> console.log (resp));
+
+// O más ordenado como
+let headers = {
+	method: 'POST',
+	body: `{"Nombre": "Artime", "Trabajo": "Contador"}`,
+	headers:{"Content-type": "application/json"}
+}
+
+fetch ('https://reqres.in/api/users', headers)
+	.then (resp=> resp.json())
+	.then (resp=> console.log (resp));
+
+// Como Blob
+const imagen = document.querySelector(".imagen");
+
+fetch ('descarga.png')
+	.then (resp=> resp.blob())
+	.then (img=> imagen.src = URL.createObjectURL(img));
+
+-----------------------------------------------------------------------------------------------
+Axios 
+-----------------------------------------------------------------------------------------------
+// Sirve cuando hay muchas peticiones
+
+// Con Fetch
+fetch ('https://reqres.in/api/users')
+	.then (resp=> resp.json())
+	.then (resp=> console.log (resp));
+
+
+// Con Axios
+axios ('info.txt')
+	.then(res=> console.log(res.data));
+
+
+// GET
+axios.get ('info.txt')
+	.then(res=> console.log(res));
+
+// ó
+axios ('info.txt')
+	.then(res=> console.log(res));
+
+// POST
+axios.post ('info.txt')
+	.then(res=> console.log(res));
+
+// Usando el caso de Fetch
+info = {'nombre': 'lucas', 'apellido': 'dalto'} //Cómo JSON!!!
+
+axios.post ('https://reqres.in/api/users', info)
+	.then (resp=> console.log (resp));
+
+-----------------------------------------------------------------------------------------------
+Fetch y Axios con Async y Await
+-----------------------------------------------------------------------------------------------
+// Esto no se carga porque la funcion se ejecuta antes de recibir la respuesta.
+function getName () {
+	fetch("info.txt")
+		.then (res=> {
+			if (res.ok) Promise.resolve(res)
+			else Promise.reject(res);
+		})
+		.then (res=>console.log(res))
+		.catch(e=>console.log(e))
+};
+
+getName();
+
+//Esto si
+// async function getName () {
+	
+// 	let peticion = await fetch('info.txt');
+// 	let resultado = await peticion.json();
+
+// 	console.log(resultado)
+// };
+
+// getName();
+
+async function getName (){
+
+	let peticion = await fetch ('info3.txt');
+	let resultado = await peticion.json();
+	// let HTMLCode = `Nombre: ${resultado.nombre}<br>
+	// 				Edad: ${resultado.edad}`;
+
+	document.querySelector('.nombre').innerHTML = resultado.nombre;
+}
+
+async function getAge (){
+
+	let peticion = await fetch ('info3.txt');
+	let resultado = await peticion.json();
+	// let HTMLCode = `Nombre: ${resultado.nombre}<br>
+	// 				Edad: ${resultado.edad}`;
+
+	document.querySelector('.edad').innerHTML = resultado.edad;
+}
+
+
+document.getElementById('getNombre').addEventListener('click', getName);
+document.getElementById('getEdad').addEventListener('click', getAge);
+
+---------------------------------------------------------------------------------------
+async function getName (){
+
+	let resultado = await axios ('info3.txt');
+	let div = document.createElement("div");
+	div.classList.add("nombre");
+	
+	div.innerHTML = resultado.data.nombre;
+	document.body.appendChild (div);
+}
+
+async function getAge (){
+
+	let resultado = await axios ('info3.txt');
+	let div = document.createElement ("div");
+	div.classList.add("edad");
+	div.innerHTML = resultado.data.edad;
+	document.body.appendChild (div);
+}
+
+document.getElementById('getNombre').addEventListener('click', getName);
+document.getElementById('getEdad').addEventListener('click', getAge);
+
+----------------------------------------------------------------------------------------------
+async function getInfo (){
+	let resultado
+	let aprobados = document.querySelector(".num-aprobados")
+	let desaprobados = document.querySelector(".num-desaprobados")
+
+	try {
+		resultado = await axios ('info2.txt');
+			
+		aprobados.textContent = resultado.data.aprobados;
+		desaprobados.textContent = resultado.data.desaprobados;
+	} catch (e) {
+		aprobados.textContent = "No encontrado";
+		desaprobados.textContent = "No encontrado";
+	}
+};
+
+document.getElementById("getInfo").addEventListener('click', getInfo)
+
+-----------------------------------------------------------------------------------------------
+Agregados
+-----------------------------------------------------------------------------------------------
+Async Javascript Tutorial For Beginners (Callbacks, Promises, Async Await). (https://www.youtube.com/watch?v=_8gHHBlbziw)
+
+
+// Sync code
+function otherFunct (){
+	console.log ('We are another function');
+	console.log ('do some stuff');	
+}
+
+console.log ('Start');
+
+otherFunct ();
+
+console.log ('End');
+
+// Async code
+console.log ('------------------------')
+console.log ('-- Ahora Async code ----')
+console.log ('------------------------')
+console.log ('Start');
+
+setTimeout(()=>console.log ('We are in the timeout'), 2000);
+
+console.log ('End');
+
+------------------------------------------------------------------------------------------------------------------------------
+console.log ("Start");
+
+function loginUser (email, password, callback) {
+	setTimeout(function() {
+		console.log ('Now we have the data');
+		callback ({userEmail: email})
+	}, 2000);
+}
+
+function getUserVideos (email, callback) {
+	setTimeout(function() {
+		callback (['The Super', 'video2', 'video3']);
+	}, 1000);
+}
+
+function videoDetails (video, callback) {
+	setTimeout(function() {
+		callback ('The title of the video is My cousin Vinnie and ' + video);
+	}, 3000);
+}
+
+const user = loginUser ("lugezz@gmail.com", 12345, user=> {
+	console.log (user);
+	getUserVideos (user.userEmail, videos=>{
+		console.log (videos);
+
+		videoDetails (videos [0], title=>{
+			console.log (title);
+		});
+	});
+} );
+
+console.log ("Finish");
+
+------------------------------------------------------------------------------------------------------------------------------
+Promises
+------------------------------------------------------------------------------------------------------------------------------
+const promise = new Promise ((resolve, reject)=>{
+	setTimeout(function() {
+		console.log ('got the user');
+		//resolve ({user: "Ed"});
+		reject (new Error ('Ponete las pilas'))
+	}, 2000);
+});
+
+promise.then(user=> {
+	console.log (user);
+}).catch(err=>console.log (err.message));
+
+------------------------------------------------------------------------------------------------------------------------------
+console.log ("Start");
+
+function loginUser (email, password) {
+	return new Promise((resolve, reject)=> {
+		setTimeout(function() {
+			console.log ('Now we have the data');
+			resolve ({userEmail: email})
+		}, 2000);
+	});
+
+}
+
+function getUserVideos (email) {
+	return new Promise((resolve, reject)=> {
+		setTimeout(function() {
+			resolve (['The Super', 'video2', 'video3']);
+		}, 1000);
+	});
+}
+
+function videoDetails (video) {
+	return new Promise((resolve, reject)=> {
+		setTimeout(function() {
+			resolve ('The title of the video is My cousin Vinnie and ' + video);
+		}, 3000);
+	});		
+}
+
+loginUser ('Artime', "bumba")
+.then(user=> getUserVideos (user.email))
+.then(videos=> videoDetails (videos [0]))
+.then(detail=> console.log(detail));
+
+
+console.log ("Finish");
+
+------------------------------------------------------------------------------------------------------------------------------
+Promesas, programación funcional en javascript parte 9 (https://www.youtube.com/watch?v=5XyzLfPBpZs)
+------------------------------------------------------------------------------------------------------------------------------
+const p1 = Promise.resolve (1);
+
+console.log (p1);
+
+p1
+	.then(x => x+5)
+	.then(x => Promise.resolve(x + 5))
+	.then(x => Promise.reject ('Algo salió mal'))
+	.then(x => console.log (x))
+	.catch(e=> console.log (e))
+	;
+
+------------------------------------------------------------------------------------------------------------------------------
+const delayed = x => new Promise ((resolve, reject)=> {
+	setTimeout(function() {
+		resolve(x)
+	}, 1000);
+});
+
+delayed(7)
+	.then (x => {
+		console.log (x);
+		return delayed (x + 7)
+	})
+	.then (x => console.log (x))
+	.then (x=> Promise.reject ('Hubo un error :('))
+	.catch(e => console.log (e));
+------------------------------------------------------------------------------------------------------------------------------

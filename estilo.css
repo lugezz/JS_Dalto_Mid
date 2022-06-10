@@ -1,0 +1,23 @@
+body {
+	color: #333;
+	font-family: "Arial Narrow";
+}
+
+p {
+	font-size: 20px;
+}
+
+#getInfo {
+	font-size: 40px;
+	margin: 20px;
+}
+
+.info {
+	background: #000;
+	color: #fff;
+	font-size: 32px;
+	margin: 5px;
+	padding: 15px;
+	display: inline-block;
+}
+
